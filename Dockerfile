@@ -6,24 +6,8 @@ SHELL ["/bin/bash", "-c"]
 
 ARG FACTORIO_VERSION
 ARG FACTORIO_ENVIRONMENT
-ARG FACTORIO_SERVER_LOAD_LATEST
-ARG FACTORIO_SERVER_GEN_MAP
-ARG FACTORIO_SERVER_GEN_CONFIG
-ARG FACTORIO_SERVER_USE_SERVER_WHITELIST
-ARG FACTORIO_SERVER_USE_ADMIN_WHITELIST
-ARG FACTORIO_SERVER_USE_MAP_SETTINGS
-ARG FACTORIO_SERVER_USE_MAPGEN_SETTINGS
-
 # Environment variables lie here
-
-ENV FACTORIO_ENVIRONMENT="stable"
-ENV FACTORIO_SERVER_LOAD_LATEST=false
-ENV FACTORIO_SERVER_GEN_MAP=false
-ENV FACTORIO_SERVER_GEN_CONFIG=false
-ENV FACTORIO_SERVER_USE_SERVER_WHITELIST=false
-ENV FACTORIO_SERVER_USE_ADMIN_WHITELIST=false
-ENV FACTORIO_SERVER_USE_MAP_SETTINGS=false
-ENV FACTORIO_SERVER_USE_MAPGEN_SETTINGS=false
+ENV FACTORIO_ENVIRONMENT=${FACTORIO_ENVIRONMENT:-"stable"}
 
 # Install wget & tar
 RUN /usr/bin/apt update -y && /usr/bin/apt install wget xz-utils -y
@@ -33,13 +17,14 @@ RUN if [[ -z $FACTORIO_VERSION  ]]; then wget https://factorio.com/get-download/
 WORKDIR /tmp
 RUN xz -d /tmp/factorio.tar.xz && tar xvf /tmp/factorio.tar && mv /tmp/factorio /opt/factorio
 RUN chmod +x /opt/factorio/bin/x64/factorio
+RUN ln -s /opt/factorio/bin/x64/factorio /usr/bin/factorio
+
 RUN rm -f /tmp/*
 
-WORKDIR /
-RUN mkdir /config
-RUN mkdir /mods
-RUN mkdir /opt/factorio/saves
-ADD docker-entrypoint.sh docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+WORKDIR /opt/factorio
+RUN mkdir mods
+RUN mkdir saves
 
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
+ENTRYPOINT ["/bin/bash", "-c"]
+WORKDIR /opt/factorio/bin/x64
+CMD  [ "factorio -h" ]
