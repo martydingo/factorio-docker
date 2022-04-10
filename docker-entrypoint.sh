@@ -27,6 +27,7 @@ else \
         if [[ $FACTORIO_SERVER_LOAD_LATEST == true ]];
         then \
                 /opt/factorio/bin/x64/factorio \
+                --mod-directory /mods \
                 --server-settings /config/server-settings.json \
                 --start-server-load-latest
         else
@@ -37,21 +38,24 @@ else \
                                 if [[ $FACTORIO_SERVER_USE_MAP_SETTINGS == true ]];
                                 then \
                                         /opt/factorio/bin/x64/factorio \
+                                        --mod-directory /mods \
                                         --server-settings /config/server-settings.json \
                                         --map-gen-settings /config/map-gen-settings.json \
                                         --map-settings /config/map-settings.json \
-                                        --create `date +%Y-%m-%d_%H-%M-%`
+                                        --create /opt/factorio/saves/`date +%Y-%m-%d_%H-%M-%`
                                 else
                                         /opt/factorio/bin/x64/factorio \
+                                        --mod-directory /mods \
                                         --server-settings /config/server-settings.json \
                                         --map-gen-settings /config/map-gen-settings.json \
-                                        --create `date +%Y-%m-%d_%H-%M-%`
+                                        --create /opt/factorio/saves/`date +%Y-%m-%d_%H-%M-%`
                                 fi
                         else
                                 echo 'FACTORIO_SERVER_USE_MAPGEN_MAP_SETTINGS FALSE'
                                         /opt/factorio/bin/x64/factorio \
+                                        --mod-directory /mods \
                                         --server-settings /config/server-settings.json \
-                                        --create `date +%Y-%m-%d_%H-%M-%`
+                                        --create /opt/factorio/saves/`date +%Y-%m-%d_%H-%M-%`
                         fi
                 fi
         fi      

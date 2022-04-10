@@ -17,7 +17,7 @@ ARG FACTORIO_SERVER_USE_MAPGEN_SETTINGS
 # Environment variables lie here
 
 ENV FACTORIO_ENVIRONMENT="stable"
-ENV FACTORIO_SERVER_LOAD_LATEST=true
+ENV FACTORIO_SERVER_LOAD_LATEST=false
 ENV FACTORIO_SERVER_GEN_MAP=false
 ENV FACTORIO_SERVER_GEN_CONFIG=false
 ENV FACTORIO_SERVER_USE_SERVER_WHITELIST=false
@@ -37,6 +37,8 @@ RUN rm -f /tmp/*
 
 WORKDIR /
 RUN mkdir /config
+RUN mkdir /mods
+RUN mkdir /opt/factorio/saves
 ADD docker-entrypoint.sh docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
