@@ -1,0 +1,7 @@
+FROM alpine:latest
+ARG FACTORIO_ENVIRONMENT
+ARG FACTORIO_VERSION 
+LABEL maintainer="martydingo" name="martydingo/factorio-docker"
+RUN apk add curl tar
+RUN if [[ -z "$FACTORIO_VERSION" ]] ; then curl -O "/tmp/factorio-${FACTORIO_ENVIRONMENT:-stable}-latest.tar.gz" https://factorio.com/get-download/${FACTORIO_ENVIRONMENT:-stable}/headless/linux64 ; else curl -O "/tmp/factorio-${FACTORIO_VERSION}.tar.gz" https://factorio.com/get-download/${FACTORIO_VERSION}/headless/linux64 ; export FACTORIO_TAR="/tmp/factorio-${FACTORIO_ENVIRONMENT:-stable}-latest.tar.gz" ; fi
+RUN echo $FACTORIO_TAR && tar xvzf $FACTORIO_TAR -C /opt/factorio
